@@ -13,7 +13,7 @@ for i = 1:length(choice)
     
     %update Qs:
     Q(choice(i)) = Q(choice(i)) + lr * (rew(i) - Q(choice(i)));
-    Q(3-choice(i)) = (1-lr) * Q(3-choice(i)); %decay unchosen
+    %Q(3-choice(i)) = (1-lr) * Q(3-choice(i)); %decay unchosen
 end
 
 cp1 = smxProb(choice==1, 1);

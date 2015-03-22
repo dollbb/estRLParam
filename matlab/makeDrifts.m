@@ -30,7 +30,7 @@ end
     
     payoff = payoff';
     if write == true
-        dlmwrite('payProbDriftLL.csv', payoff, 'delimiter', ',');
+        dlmwrite('payProbDrift.csv', payoff, 'delimiter', ',');
     end
     
     
