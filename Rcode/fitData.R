@@ -44,9 +44,13 @@ if (estMethod %in% c("ML", "MAP")) {
     source("lle.TD.R")
     if (estMethod == "ML"){
         fun <- lle.TD
+        lower = c(0,-Inf)
+        upper = c(1,Inf)
     } else if (estMethod == "MAP") {
         source("lle.prior.R")
         fun <- lle.prior
+        lower = c(-Inf,-Inf)
+        upper = c(Inf,Inf)
     }
     
     subs <- unique(dat$sub)
@@ -63,7 +67,7 @@ if (estMethod %in% c("ML", "MAP")) {
         print(paste("estimating params sub ", toString(subs[s]), sep=""))
 
     for (i in 1:numStPts) {
-           result <- optimx(stPts[1,], fun, data = subDat, method="bobyqa", lower= c(0,-Inf), upper=c(1,Inf))
+           result <- optimx(stPts[i,], fun, data=subDat, method="bobyqa", lower=lower, upper=upper)
 
            subRes[i,1] <- result$p1
            subRes[i,2] <- result$p2
@@ -109,7 +113,7 @@ if (estMethod %in% c("ML", "MAP")) {
 
     #run 3 chains -- in parallel if possible
     if (detectCores() > 3) {
-        sflist <- mclapply(1:3, mc.cores = 3, function(i) stan(fit=fit, seed = 123,
+        sflist <- mclapply(1:3, mc.cores = 3, function(i) stan(fit=fit, #seed = 123,
                  data = stanData, chains = 1, warmup = 500, iter=2000,chain_id = i))
         fits <- sflist2stanfit(sflist)
     } else {
@@ -135,8 +139,10 @@ if (estMethod %in% c("ML", "MAP")) {
     fitSummary <- cbind(subs, Malphas, alphCI, Mitemps, itempCI)
     fname <- paste("indivFitSummary_", toString(length(samp$aa)), "samples_", estMethod, ".csv", sep="")
     write.table(fitSummary, fname, row.names=F, quote=F, sep=",")
-
-return(fits)
+    save(fits, file="fitsMCMC.RData")
+    
+    return(fits)
+    
     }
 }
 
