@@ -18,7 +18,8 @@ fitData <- function(estMethod, genNewData=FALSE){
 # returns a fit object with quantiles and diagnostics, and writes a summary
 # file (indivFitSummary*csv) with mean estimates and 50% confidence
 # intervals for each subject. 
-# Compare the estimates with the generative parameters (genParams.csv).    
+# Compare the estimates with the generative parameters
+# (genParams.csv) with plotFits.R.    
 #
 # genNewData (default=FALSE) creates new simulated agents with new
 # parameters on the same task. To generate/plot new random walks of the

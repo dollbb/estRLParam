@@ -1,7 +1,7 @@
 estimate RL params
 ============
 
-functions for simulating and estimating model parameters in a reinforcement learning task with a variety of methods. 
+functions for simulating a reinforcement learning model in a restless bandit task and estimating its parameters with a variety of methods. 
 
 both R code and matlab code simulate the same task and estimate the
 generative parameters with Maximum Likelihood, or Maximum A Posteriori

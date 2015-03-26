@@ -15,7 +15,7 @@ fitDataReg <- function(modMethod, genNewData=FALSE){
 # bandit arm reward probabilities, see makeDrifts.R 
 
     modMethod <- toupper(modMethod)
-    stopifnot(modMethod %in% c("L", "M"))
+    stopifnot(modMethod %in% c("L", "M", "MCMC"))
 
     if (genNewData) {
         #this function will write a new datTD.csv
@@ -63,6 +63,40 @@ if (modMethod == "L") {
         fits <- fits[c(3,1,2)]
         write.table(fits, "indivFitsLogRegLmerSummary.csv", row.names=F, quote=F, sep=",")       
 
+} else if (modMethod == "MCMC") {
+
+        require(rstan)
+        require(parallel)
+        set_cppo("fast")
+
+        #remove NA rows
+        dat <- dat[complete.cases(dat),]
+
+        N <- dim(dat)[1] # num obs
+        NS <- length(unique(dat$sub)) # num subs
+        stanData <- list(N=N, NS=NS, prevRew=dat$prev.rew,
+                         stay=dat$stay, subId=dat$sub, zero=c(0,0))
+
+        fit <- stan(file = 'logRegVC.stan', data = stanData, iter = 1, chains = 1)
+
+        #run 3 chains -- in parallel if possible
+        if (detectCores() > 3) {
+            sflist <- mclapply(1:3, mc.cores = 3, function(i) stan(fit=fit,
+                 data = stanData, chains = 1, warmup = 500, iter=3000,chain_id = i))
+            fits <- sflist2stanfit(sflist)
+        } else {
+            fits <- stan(fit = fit, data = stanData, warmup = 500, iter =
+                       3000, chains = 3)
+        }
+
+        samp <- extract(fits)
+        Mints <- colMeans(samp$varySub[, ,1]) + mean(samp$intercept)
+        MprevRews <- colMeans(samp$varySub[, ,2]) + mean(samp$betaPrevRew)
+        fitSummary <- cbind(unique(dat$sub), Mints, MprevRews)
+        colnames(fitSummary)[1] <- "sub"        
+        fname <- paste("indivFitLogRegMCMCSummary_", toString(length(samp$intercept)), "samples.csv", sep="")
+        write.table(fitSummary, fname, row.names=F, quote=F, sep=",")
+        
 }    
     return(fits)
 }
