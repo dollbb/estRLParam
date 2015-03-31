@@ -22,7 +22,7 @@ fitDataReg <- function(modMethod, genNewData=FALSE){
         source("generateTD.R")
         dat <- generateTD
     } else {
-        dat <- read.table('datTD.csv', header=F, sep=",")
+        dat <- read.table('dat/datTD.csv', header=F, sep=",")
         colnames(dat) <- c("sub","trl","choice","rew")
     }
 
@@ -49,7 +49,7 @@ if (modMethod == "L") {
 
         fits <- data.frame(fits)
         colnames(fits) <- c("sub", "intercept", "prev.rew", "log.lik")
-        write.table(fits, "indivFitsLogReg.csv", row.names=F, quote=F, sep=",")
+        write.table(fits, "dat/indivFitsLogReg.csv", row.names=F, quote=F, sep=",")
         
 } else if (modMethod == "M") {
 
@@ -61,7 +61,7 @@ if (modMethod == "L") {
         fits$sub <- row.names(fits)
         colnames(fits)[1] <- "intercept"
         fits <- fits[c(3,1,2)]
-        write.table(fits, "indivFitsLogRegLmerSummary.csv", row.names=F, quote=F, sep=",")       
+        write.table(fits, "dat/indivFitsLogRegLmerSummary.csv", row.names=F, quote=F, sep=",")       
 
 } else if (modMethod == "MCMC") {
 
@@ -94,9 +94,9 @@ if (modMethod == "L") {
         MprevRews <- colMeans(samp$varySub[, ,2]) + mean(samp$betaPrevRew)
         fitSummary <- cbind(unique(dat$sub), Mints, MprevRews)
         colnames(fitSummary)[1] <- "sub"        
-        fname <- paste("indivFitLogRegMCMCSummary_", toString(length(samp$intercept)), "samples.csv", sep="")
+        fname <- paste("dat/indivFitLogRegMCMCSummary_", toString(length(samp$intercept)), "samples.csv", sep="")
         write.table(fitSummary, fname, row.names=F, quote=F, sep=",")
-        
+        save(fits, file="dat/logRegFitsMCMC.RData")
 }    
     return(fits)
 }

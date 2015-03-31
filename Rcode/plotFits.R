@@ -9,10 +9,10 @@ stopifnot(plotEst %in% c("ML", "MAP", "MCMC"))
 if (ccc) {require(epiR)}
 
 #load generative data
-if (file.exists("genParams.csv")) {
-    gPar <- read.table("genParams.csv", header = F, sep = ",")
+if (file.exists("dat/genParams.csv")) {
+    gPar <- read.table("dat/genParams.csv", header = F, sep = ",")
     colnames(gPar) <- c("alpha","itemp")
-} else { stop("No generative parameters file!!! See generateTD.R")
+} else { stop("No generative parameters file !!! See generateTD.R")
      }
 
 #make empty plot
@@ -30,8 +30,8 @@ ccc.a.stats <- c()
 
 #load and plot other data
 if ("ML" %in% plotEst) {
-    if (file.exists("indivFits_10StPts_ML.csv")) {
-        mlPar <- read.table("indivFits_10StPts_ML.csv", header=T,sep=",")
+    if (file.exists("dat/indivFits_10StPts_ML.csv")) {
+        mlPar <- read.table("dat/indivFits_10StPts_ML.csv", header=T,sep=",")
         points(gPar$alpha, mlPar$alpha)
         legName <- c(legName, "ML")
         legPch <- c(legPch, 1)
@@ -45,8 +45,8 @@ if ("ML" %in% plotEst) {
 }
 
 if ("MAP" %in% plotEst) {
-    if (file.exists("indivFits_10StPts_MAP.csv")) {
-        mapPar <- read.table("indivFits_10StPts_MAP.csv", header=T, sep=",")
+    if (file.exists("dat/indivFits_10StPts_MAP.csv")) {
+        mapPar <- read.table("dat/indivFits_10StPts_MAP.csv", header=T, sep=",")
         points(gPar$alpha, mapPar$alpha, col = 'red', pch = 4)
         legName <- c(legName, "MAP")
         legPch <- c(legPch, 4)
@@ -60,8 +60,8 @@ if ("MAP" %in% plotEst) {
 }
 
 if ("MCMC" %in% plotEst) {
-    if (file.exists("indivFitSummary_4500samples_MCMC.csv")) {
-        mcmcPar <- read.table("indivFitSummary_4500samples_MCMC.csv", header=T, sep=",")
+    if (file.exists("dat/indivFitSummary_4500samples_MCMC.csv")) {
+        mcmcPar <- read.table("dat/indivFitSummary_4500samples_MCMC.csv", header=T, sep=",")
         points(gPar$alpha, mcmcPar$Malphas, col = 'blue', pch = 5)
         legName <- c(legName, "MCMC")
         legPch <- c(legPch, 5)
@@ -135,7 +135,7 @@ if (ccc) {
         print(paste(legName[i], ": ", toString(round(ccc.b.est[i] , digits=2)), sep=""))
     }
 
-    return(ccc.stats)
+    return(list(ccc.a.stats, ccc.b.stats))
 }
 
 

@@ -1,4 +1,4 @@
-fitDiagnosticsMCMC <- function(fit, tplot=F){
+diagnoseMCMC <- function(fit, tplot=F){
 #Provide diagnostics for a stanfit object. This function checks for
 #divergence errors, values of Rhat > 1.01 (potential scale reduction
 #factor: Gelman and Rubin 92), and, optionally, traceplots for all
@@ -25,7 +25,7 @@ fitDiagnosticsMCMC <- function(fit, tplot=F){
     effPer <- summary(fit)$summary[,"n_eff"] / numSamps
     
     if (any(effPer<0.1)) {
-        print("params with effective samples > 10 percent of total !!! ")
+        print("params with effective samples > 10 percent of total !!! try longer chains.")
     }
 
     if (tplot) {

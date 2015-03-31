@@ -16,7 +16,7 @@ fitData <- function(estMethod, genNewData=FALSE){
 # from the joint posterior distributions of estimates over individual
 # and group level parameters. see TD.stan for model and priors. MCMC
 # returns a fit object with quantiles and diagnostics, and writes a summary
-# file (indivFitSummary*csv) with mean estimates and 50% confidence
+# file (dat/indivFitSummary*csv) with mean estimates and 50% confidence
 # intervals for each subject. 
 # Compare the estimates with the generative parameters
 # (genParams.csv) with plotFits.R.    
@@ -35,7 +35,7 @@ fitData <- function(estMethod, genNewData=FALSE){
         source("generateTD.R")
         dat <- generateTD
     } else {
-        dat <- read.table('datTD.csv', header=F, sep=",")
+        dat <- read.table('dat/datTD.csv', header=F, sep=",")
         colnames(dat) <- c("sub","trl","choice","rew")
     }
     
@@ -83,7 +83,7 @@ if (estMethod %in% c("ML", "MAP")) {
     }
     
     colnames(bestFit) <- c("sub", "alpha", "itemp", "lle", "convCode")
-    fname <- paste("indivFits_", toString(numStPts), "StPts_", estMethod, ".csv", sep="")
+    fname <- paste("dat/indivFits_", toString(numStPts), "StPts_", estMethod, ".csv", sep="")
     write.table(bestFit, fname, row.names=F, quote=F, sep=",")
     return(bestFit)
 
@@ -138,9 +138,9 @@ if (estMethod %in% c("ML", "MAP")) {
     colnames(itempCI) <- c("itemp25", "itemp75")
 
     fitSummary <- cbind(subs, Malphas, alphCI, Mitemps, itempCI)
-    fname <- paste("indivFitSummary_", toString(length(samp$aa)), "samples_", estMethod, ".csv", sep="")
+    fname <- paste("dat/indivFitSummary_", toString(length(samp$aa)), "samples_", estMethod, ".csv", sep="")
     write.table(fitSummary, fname, row.names=F, quote=F, sep=",")
-    save(fits, file="fitsMCMC.RData")
+    save(fits, file="dat/fitsMCMC.RData")
     
     return(fits)
     

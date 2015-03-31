@@ -8,7 +8,6 @@ generateTD <- function(numSubs=20) {
 # reward data for each trial, and writes these to datTD.csv. 
 # generative params for each individual are written to genParams.csv
 
-    
     alpha <- rbeta(numSubs, 2, 5)
     itemp <- rgamma(numSubs, 2, scale=2)
     totaltrials <- 200
@@ -18,7 +17,7 @@ generateTD <- function(numSubs=20) {
     rewHist = numeric(length = totaltrials)
     Q = c(0.5,0.5)
     #load payoff -- see makeDrifts.R to make new payoffs
-    payoff <- read.table("payProbDrift.csv", sep=",")
+    payoff <- read.table("dat/payProbDrift.csv", sep=",")
     trl = 1:totaltrials #trl nums
     out = list()
     
@@ -41,8 +40,8 @@ generateTD <- function(numSubs=20) {
     }
 
     out <- do.call("rbind", out)
-    write.table(out, "datTD1.csv", row.names=F, col.names=F, quote=F, sep=",")
-    write.table(cbind(alpha, itemp), "genParams1.csv", row.names=F, col.names=F, quote=F, sep=",")
+    write.table(out, "dat/datTD.csv", row.names=F, col.names=F, quote=F, sep=",")
+    write.table(cbind(alpha, itemp), "dat/genParams.csv", row.names=F, col.names=F, quote=F, sep=",")
     return(out)
 
 }
