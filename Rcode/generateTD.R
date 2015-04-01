@@ -2,26 +2,28 @@ generateTD <- function(numSubs=20) {
 # Simulate 200 trials in (default=20) agents using Temporal
 # Differences learning, with learning rate (alpha) and inverse
 # temperature (itemp). Individual params sampled from generative
-# distributions: learning rate from beta(2,5) (mean=0.2857), 
-# softmax inverse temperature from gamma(2, scale=2) (mean=4).
+# distributions: learning rate from beta(2.5,5) (mean=0.333), 
+# softmax inverse temperature from abs(normal(mean=1.5, sd=1)). mean=1.56
 # This function returns simulated choice and
 # reward data for each trial, and writes these to datTD.csv. 
 # generative params for each individual are written to genParams.csv
 
-    alpha <- rbeta(numSubs, 2, 5)
-    itemp <- rgamma(numSubs, 2, scale=2)
+    alpha <- rbeta(numSubs, 2.5, 5)
+    itemp <- abs(rnorm(numSubs, 1.5, 1))
     totaltrials <- 200
 
-    #make empty vec
-    choice = numeric(length = totaltrials)
-    rewHist = numeric(length = totaltrials)
-    Q = c(0.5,0.5)
     #load payoff -- see makeDrifts.R to make new payoffs
     payoff <- read.table("dat/payProbDrift.csv", sep=",")
     trl = 1:totaltrials #trl nums
     out = list()
     
     for (sub in 1:numSubs) {
+
+       #make empty vec
+        choice = numeric(length = totaltrials)
+        rewHist = numeric(length = totaltrials)
+        Q = c(0.5,0.5)
+    
         for (i in 1:totaltrials) {
 
     #choose

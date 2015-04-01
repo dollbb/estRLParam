@@ -25,7 +25,7 @@ diagnoseMCMC <- function(fit, tplot=F){
     effPer <- summary(fit)$summary[,"n_eff"] / numSamps
     
     if (any(effPer<0.1)) {
-        print("params with effective samples > 10 percent of total !!! try longer chains.")
+        print("params with effective samples < 10 percent of total !!! try longer chains or thinning.")
     }
 
     if (tplot) {

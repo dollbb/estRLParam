@@ -60,8 +60,8 @@ if ("MAP" %in% plotEst) {
 }
 
 if ("MCMC" %in% plotEst) {
-    if (file.exists("dat/indivFitSummary_4500samples_MCMC.csv")) {
-        mcmcPar <- read.table("dat/indivFitSummary_4500samples_MCMC.csv", header=T, sep=",")
+    if (file.exists("dat/indivFitSummary_7500samples_MCMC.csv")) {
+        mcmcPar <- read.table("dat/indivFitSummary_7500samples_MCMC.csv", header=T, sep=",")
         points(gPar$alpha, mcmcPar$Malphas, col = 'blue', pch = 5)
         legName <- c(legName, "MCMC")
         legPch <- c(legPch, 5)

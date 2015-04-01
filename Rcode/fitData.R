@@ -12,7 +12,7 @@ fitData <- function(estMethod, genNewData=FALSE){
 #
 # For ML and MAP, likelihood is maximized 10 times for each agent with random
 # starting parameters and the best fits are returned and written to file called 
-# indivFits*csv. For MCMC, 3 chains of 2000 samples (500 burn-in) are drawn
+# indivFits*csv. For MCMC, 3 chains of 3000 samples (500 burn-in) are drawn
 # from the joint posterior distributions of estimates over individual
 # and group level parameters. see TD.stan for model and priors. MCMC
 # returns a fit object with quantiles and diagnostics, and writes a summary
@@ -33,7 +33,7 @@ fitData <- function(estMethod, genNewData=FALSE){
     if (genNewData) {
         #this function will write a new datTD.csv
         source("generateTD.R")
-        dat <- generateTD
+        dat <- generateTD() 
     } else {
         dat <- read.table('dat/datTD.csv', header=F, sep=",")
         colnames(dat) <- c("sub","trl","choice","rew")
@@ -115,11 +115,11 @@ if (estMethod %in% c("ML", "MAP")) {
     #run 3 chains -- in parallel if possible
     if (detectCores() > 3) {
         sflist <- mclapply(1:3, mc.cores = 3, function(i) stan(fit=fit, #seed = 123,
-                 data = stanData, chains = 1, warmup = 500, iter=2000,chain_id = i))
+                 data = stanData, chains = 1, warmup = 500, iter=3000,chain_id = i))
         fits <- sflist2stanfit(sflist)
     } else {
         fits <- stan(fit = fit, data = stanData, warmup = 500, iter =
-                       2000, chains = 3)
+                       3000, chains = 3)
     }
 
     #make / write summary
