@@ -77,7 +77,7 @@ if (modMethod == "L") {
         stanData <- list(N=N, NS=NS, prevRew=dat$prev.rew,
                          stay=dat$stay, subId=dat$sub, zero=c(0,0))
 
-        fit <- stan(file = 'logRegVC.stan', data = stanData, iter = 1, chains = 1)
+        fit <- stan(file = 'stanMods/logRegVC.stan', data = stanData, iter = 1, chains = 1)
 
         #run 3 chains -- in parallel if possible
         if (detectCores() > 3) {

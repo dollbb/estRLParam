@@ -41,7 +41,7 @@ compareModsMCMC <- function(genNewData=FALSE){
 
     
     #compile the model
-    fitQ <- stan(file = "TDll.stan", data = stanData, iter = 1, chains = 1)
+    fitQ <- stan(file = "stanMods/TDll.stan", data = stanData, iter = 1, chains = 1)
 
     #run 3 chains -- in parallel if possible
     if (detectCores() > 3) {
@@ -56,7 +56,7 @@ compareModsMCMC <- function(genNewData=FALSE){
 
 
     #compile the dummy model
-    fitD <- stan(file = "dummy.stan", data = stanData, iter = 1, chains = 1)
+    fitD <- stan(file = "stanMods/dummy.stan", data = stanData, iter = 1, chains = 1)
 
     #run 3 chains -- in parallel if possible
     if (detectCores() > 3) {

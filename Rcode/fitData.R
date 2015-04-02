@@ -110,7 +110,7 @@ if (estMethod %in% c("ML", "MAP")) {
     stanData <- list(NS = numSubs, MT = maxTrl, NT =as.vector(numTrl), ch = choice, r = rew)
 
     #compile the model
-    fit <- stan(file = "TD.stan", data = stanData, iter = 1, chains = 1)
+    fit <- stan(file = "stanMods/TD.stan", data = stanData, iter = 1, chains = 1)
 
     #run 3 chains -- in parallel if possible
     if (detectCores() > 3) {
