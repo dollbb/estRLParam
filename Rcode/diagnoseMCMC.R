@@ -8,7 +8,7 @@ diagnoseMCMC <- function(fit, tplot=F){
 
     sumDiv <- c()
     for (i in 1:length(samplerParams)) {
-        sumDiv <- c(sumDiv, sum(samplerParams[[1]][,"n_divergent__"]))
+        sumDiv <- c(sumDiv, sum(samplerParams[[i]][,"n_divergent__"]))
     }
 
     if (any(as.logical(sumDiv))) {

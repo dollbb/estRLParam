@@ -16,7 +16,7 @@ compareModsMCMC <- function(genNewData=FALSE){
         source("generateTD.R")
         dat <- generateTD
     } else {
-        dat <- read.table('datTD.csv', header=F, sep=",")
+        dat <- read.table('dat/datTD.csv', header=F, sep=",")
         colnames(dat) <- c("sub","trl","choice","rew")
     }
 
